@@ -19,19 +19,20 @@ tim <- system.time({
             )
             if (!length(html)) {
                   n <<- n + 1
-                  message('Index ', n, ' failed.')
+                  message('Index ', n, ' failed. Link: ', .x)
                   return(NULL)
             }
             genus <- html_node(html, '.citation__title') |>
                   html_text2()
-            abstract <- html_node(html, '.article-section__content p:nth-child(3)' ) |>
+            abstract <- html_node(html, '.article-section__content' ) |>
                   html_text2()
-            msg <- paste0('Got ', genus, ' - Number ', n, '.')
+            msg <- paste0('Got ', genus, ' - Number ', n, '. Link: ', .x)
             log_print(msg)
             n <<- n + 1
             data.frame(
                   genus = genus,
-                  abstract = abstract
+                  abstract = abstract,
+                  link = .x
             )
       }) |>
             bind_rows() |>

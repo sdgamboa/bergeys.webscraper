@@ -6,7 +6,7 @@ library(logr)
 library(readr)
 logfile <- "log_file"
 lf <- log_open(logfile, logdir = FALSE, compact = TRUE, show_notes = FALSE)
-links <- read.table('genera_abstract_links.txt')[[1]]
+links <- read.table('misc/genera_abstract_links.txt')[[1]]
 msg <- paste0('Number of links: ', length(links))
 log_print(msg, blank_after = TRUE)
 n <- 1
@@ -41,7 +41,10 @@ tim <- system.time({
 abstracts <- abstracts |>
       discard(is.null) |>
       bind_rows() |>
-      mutate(genus = sub(' *†$', '', genus))
+      mutate(
+            genus = sub(' *†$', '', genus),
+            abstract = str_squish(abstract)
+      )
 log_print(tim, blank_after = TRUE)
 msg <- paste0('Number of genera recovered: ', nrow(abstracts))
 log_print(msg, blank_after = TRUE)

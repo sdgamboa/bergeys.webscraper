@@ -5,7 +5,7 @@ library(dplyr)
 library(logr)
 logfile <- "log_file"
 lf <- log_open(logfile, logdir = FALSE, compact = TRUE, show_notes = FALSE)
-links <- read.table('misc/genera_abstract_links.txt')[[1]]
+links <- read.table('genera_abstract_links.txt')[[1]]
 n <- 1
 tim <- system.time({
       abstracts <- map(links, ~ {
@@ -23,7 +23,8 @@ tim <- system.time({
                   html_text2()
             abstract <- html_node(html, '.article-section__content p:nth-child(3)' ) |>
                   html_text2()
-            message('Got ', genus, ' - Number ', n, '.')
+            msg <- paste0('Got ', genus, ' - Number ', n, '.')
+            log_print(msg)
             n <<- n + 1
             data.frame(
                   genus = genus,
@@ -32,7 +33,8 @@ tim <- system.time({
       }) |>
             bind_rows() |>
             mutate(genus = sub(' *†$', '', genus))
-}) |>
+})
+abstracts <- abstracts |>
       discard(is.null) |>
       bind_rows() |>
       mutate(genus = sub(' *†$', '', genus))

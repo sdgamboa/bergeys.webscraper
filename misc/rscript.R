@@ -6,7 +6,7 @@ library(logr)
 library(readr)
 logfile <- "log_file"
 lf <- log_open(logfile, logdir = FALSE, compact = TRUE, show_notes = FALSE)
-links <- read.table('misc/genera_abstract_links.txt')[[1]]
+links <- read.table('genera_abstract_links.txt')[[1]]
 msg <- paste0('Number of links: ', length(links))
 log_print(msg, blank_after = TRUE)
 n <- 1
@@ -26,7 +26,7 @@ tim <- system.time({
                   html_text2()
             abstract <- html_node(html, '.article-section__content' ) |>
                   html_text2()
-            msg <- paste0('Got ', genus, ' - Number ', n, '. Link: ', .x)
+            msg <- paste0('Got ', genus, ' - Number ', n, '. Time: ', Sys.time(), '. Link: ', .x)
             log_print(msg)
             n <<- n + 1
             data.frame(
